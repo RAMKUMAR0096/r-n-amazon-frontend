@@ -1,9 +1,11 @@
-import { FlatList, Image, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
+import { Alert, FlatList, Image, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import EvilIcons from '@expo/vector-icons/EvilIcons';
 import Feather from '@expo/vector-icons/Feather';
 import Entypo from '@expo/vector-icons/Entypo';
+import axios from 'axios';
+import ProductItem from '../components/ProductItem';
 
 
 
@@ -137,7 +139,7 @@ const HomeScreen = () => {
       id: "1",
       title:
         "Fastrack Limitless FS1 Pro Smart Watch|1.96 Super AMOLED Arched Display with 410x502 Pixel Resolution|SingleSync BT Calling|NitroFast Charging|110+ Sports Modes|200+ Watchfaces|Upto 7 Days Battery",
-      offer: "40%",
+      offer: "40% off",
       oldPrice: 7955,
       price: 3495,
       image: "https://m.media-amazon.com/images/I/41mQKmbkVWL._AC_SY400_.jpg",
@@ -152,7 +154,7 @@ const HomeScreen = () => {
     {
       id: "2",
       title: "Aishwariya System On Ear Wireless On Ear Bluetooth Headphones",
-      offer: "40%",
+      offer: "40% off",
       oldPrice: 7955,
       price: 3495,
       image: "https://m.media-amazon.com/images/I/41t7Wa+kxPL._AC_SY400_.jpg",
@@ -164,7 +166,7 @@ const HomeScreen = () => {
       id: "3",
       title:
         "Fastrack Limitless FS1 Pro Smart Watch|1.96 Super AMOLED Arched Display with 410x502 Pixel Resolution|SingleSync BT Calling|NitroFast Charging|110+ Sports Modes|200+ Watchfaces|Upto 7 Days Battery",
-      offer: "40%",
+      offer: "40% off",
       oldPrice: 24999,
       price: 19999,
       image: "https://m.media-amazon.com/images/I/71k3gOik46L._AC_SY400_.jpg",
@@ -177,6 +179,20 @@ const HomeScreen = () => {
       size: "8GB RAM, 128GB Storage",
     },
   ];
+
+  const [products,setProducts]= useState([])
+
+  const fetchProduct = ()=>{
+    const data= axios.get('https://fakestoreapi.com/products').then((response)=>{
+      setProducts(response?.data)
+    }).catch((error)=>{
+      Alert.alert("Something went wrong","Please Try Again...!")
+    })
+  }
+
+  useEffect(()=>{
+    fetchProduct();
+  },[])
 
   return (
     <SafeAreaView style={{ paddingTop: Platform.OS === 'android' ? 0 : 0, flex: 1, backgroundColor: "white" }}>
@@ -228,8 +244,38 @@ const HomeScreen = () => {
             />
           )}
         />
+        <Text style={{fontWeight:500,fontSize:18,marginTop:10,marginHorizontal:10}}>Trending deals of the week</Text>
 
+        <View style={{flexDirection:"row",alignItems:"center",flexWrap:"wrap"}}>
+          {deals.map((item,index)=>(
+            <Pressable key={index} style={{marginVertical:10,flexDirection:"row",alignItems:"center"}}>
+              <Image style={{width:180,height:180,resizeMode:"contain"}} source={{uri: item?.image}} />
+            </Pressable>
+          ))}
+        </View>
 
+        <Text style={{width:400,height:1,backgroundColor:"#D0D0D0",margin:"auto",borderRadius:20,marginTop:15}}/>
+
+        <Text style={{fontWeight:500,fontSize:18,marginTop:10,marginHorizontal:10}}>Today's Deals</Text>
+
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{marginVertical:10}}>
+          {offers.map((item,index)=>(
+            <Pressable key={index} style={{marginVertical:10,alignItems:"center",justifyContent:"center",position:"relative"}}>
+              <Image source={{uri:item?.image}} style={{width:150,height:150,resizeMode:"contain"}} />
+              <View style={{backgroundColor:"#ffce12",width:60,height:30,alignItems:"center",justifyContent:"center",position:"absolute",top:20,borderRadius:40,right:0}}>
+                <Text style={{textAlign:"center"}}>{item?.offer}</Text>
+              </View>
+            </Pressable>
+          ))}
+        </ScrollView>
+
+         <Text style={{width:400,height:1,backgroundColor:"#D0D0D0",margin:"auto",borderRadius:20,marginTop:15}}/>
+
+        <View style={{marginVertical:10,flexDirection:"row",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",marginHorizontal:10}}>
+          {products.map((item,index)=>(
+            <ProductItem data={item} key={index}/>
+          ))}
+        </View>
       </ScrollView>
     </SafeAreaView>
   )
