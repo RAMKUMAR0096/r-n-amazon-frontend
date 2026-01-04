@@ -1,11 +1,15 @@
 import { Alert, FlatList, Image, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import EvilIcons from '@expo/vector-icons/EvilIcons';
 import Feather from '@expo/vector-icons/Feather';
 import Entypo from '@expo/vector-icons/Entypo';
 import axios from 'axios';
 import ProductItem from '../components/ProductItem';
+import DropDownPicker from 'react-native-dropdown-picker';
+import { useNavigation } from '@react-navigation/native';
+import Header from '../components/Header';
+
 
 
 
@@ -179,33 +183,38 @@ const HomeScreen = () => {
       size: "8GB RAM, 128GB Storage",
     },
   ];
+  const [items, setItems] = useState([
+    { label: "Men's clothing", value: "men's clothing" },
+    { label: "jewelery", value: "jewelery" },
+    { label: "electronics", value: "electronics" },
+    { label: "women's clothing", value: "women's clothing" },
+  ]);
 
-  const [products,setProducts]= useState([])
+  const [products, setProducts] = useState([])
+  const [open, setOpen] = useState(false);
+  const [category, setCategory] = useState("jewelery")
 
-  const fetchProduct = ()=>{
-    const data= axios.get('https://fakestoreapi.com/products').then((response)=>{
+  const navigation = useNavigation();
+  const onGenderOpen = useCallback(() => {
+    setCompanyOpen(false);
+  }, [])
+
+  const fetchProduct = () => {
+    const data = axios.get('https://fakestoreapi.com/products').then((response) => {
       setProducts(response?.data)
-    }).catch((error)=>{
-      Alert.alert("Something went wrong","Please Try Again...!")
+    }).catch((error) => {
+      Alert.alert("Something went wrong", "Please Try Again...!")
     })
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchProduct();
-  },[])
+  }, [])
 
   return (
     <SafeAreaView style={{ paddingTop: Platform.OS === 'android' ? 0 : 0, flex: 1, backgroundColor: "white" }}>
-      <ScrollView>
-        <View style={{ backgroundColor: "#00CED1", padding: 10, flexDirection: "row", alignItems: "center" }}>
-          <Pressable style={{
-            flexDirection: "row", alignItems: "center", marginHorizontal: 7, gap: 10, backgroundColor: "white", borderRadius: 3, height: 38, flex: 1
-          }}>
-            <EvilIcons name="search" size={24} color="black" style={{ paddingLeft: 10 }} />
-            <TextInput placeholder='Search amazon.in' />
-          </Pressable>
-          <Feather name="mic" size={24} color="black" />
-        </View>
+      <ScrollView vertical>
+        <Header />
         <View style={{ backgroundColor: "#AFEEEE", padding: 10, flexDirection: "row", alignItems: "center" }}>
           <Pressable style={{ flexDirection: "row", alignItems: "center", marginHorizontal: 7, gap: 5, flex: 1 }}>
             <EvilIcons name="location" size={24} color="black" style={{ paddingLeft: 10, fontWeight: 400 }} />
@@ -244,37 +253,67 @@ const HomeScreen = () => {
             />
           )}
         />
-        <Text style={{fontWeight:500,fontSize:18,marginTop:10,marginHorizontal:10}}>Trending deals of the week</Text>
+        <Text style={{ fontWeight: 500, fontSize: 18, marginTop: 10, marginHorizontal: 10 }}>Trending deals of the week</Text>
 
-        <View style={{flexDirection:"row",alignItems:"center",flexWrap:"wrap"}}>
-          {deals.map((item,index)=>(
-            <Pressable key={index} style={{marginVertical:10,flexDirection:"row",alignItems:"center"}}>
-              <Image style={{width:180,height:180,resizeMode:"contain"}} source={{uri: item?.image}} />
+        <View style={{ flexDirection: "row", alignItems: "center", flexWrap: "wrap" }}>
+          {deals.map((item, index) => (
+            <Pressable key={index} style={{ marginVertical: 10, flexDirection: "row", alignItems: "center" }}>
+              <Image style={{ width: 180, height: 180, resizeMode: "contain" }} source={{ uri: item?.image }} />
             </Pressable>
           ))}
         </View>
 
-        <Text style={{width:400,height:1,backgroundColor:"#D0D0D0",margin:"auto",borderRadius:20,marginTop:15}}/>
+        <Text style={{ width: 400, height: 1, backgroundColor: "#D0D0D0", margin: "auto", borderRadius: 20, marginTop: 15 }} />
 
-        <Text style={{fontWeight:500,fontSize:18,marginTop:10,marginHorizontal:10}}>Today's Deals</Text>
+        <Text style={{ fontWeight: 500, fontSize: 18, marginTop: 10, marginHorizontal: 10 }}>Today's Deals</Text>
 
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{marginVertical:10}}>
-          {offers.map((item,index)=>(
-            <Pressable key={index} style={{marginVertical:10,alignItems:"center",justifyContent:"center",position:"relative"}}>
-              <Image source={{uri:item?.image}} style={{width:150,height:150,resizeMode:"contain"}} />
-              <View style={{backgroundColor:"#ffce12",width:60,height:30,alignItems:"center",justifyContent:"center",position:"absolute",top:20,borderRadius:40,right:0}}>
-                <Text style={{textAlign:"center"}}>{item?.offer}</Text>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginVertical: 10 }}>
+          {offers.map((item, index) => (
+            <Pressable onPress={() => navigation.navigate("Info", {
+              id: item.id,
+              title: item.title,
+              price: item?.price,
+              carouselImages: item.carouselImages,
+              color: item?.color,
+              size: item?.size,
+              oldPrice: item?.oldPrice,
+              item: item,
+            })} key={index} style={{ marginVertical: 10, alignItems: "center", justifyContent: "center", position: "relative" }}>
+              <Image source={{ uri: item?.image }} style={{ width: 150, height: 150, resizeMode: "contain" }} />
+              <View style={{ backgroundColor: "#ffce12", width: 60, height: 30, alignItems: "center", justifyContent: "center", position: "absolute", top: 20, borderRadius: 40, right: 0 }}>
+                <Text style={{ textAlign: "center" }}>{item?.offer}</Text>
               </View>
             </Pressable>
           ))}
         </ScrollView>
 
-         <Text style={{width:400,height:1,backgroundColor:"#D0D0D0",margin:"auto",borderRadius:20,marginTop:15}}/>
+        <Text style={{ width: 400, height: 1, backgroundColor: "#D0D0D0", margin: "auto", borderRadius: 20, marginTop: 15 }} />
 
-        <View style={{marginVertical:10,flexDirection:"row",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",marginHorizontal:10}}>
-          {products.map((item,index)=>(
-            <ProductItem data={item} key={index}/>
+        <View style={{ marginHorizontal: 10, width: "45%", marginBotton: open ? 50 : 15, marginTop: 20 }}>
+          <DropDownPicker
+            style={{ backgroundColor: "B7B7B7", height: 30, marginBottom: open ? 120 : 15 }}
+            open={open}
+            value={category}
+            items={items}
+            setOpen={setOpen}
+            setValue={setCategory}
+            setItems={setItems}
+            placeholder="Choose cateagory"
+            listMode="SCROLLVIEW"
+            onOpen={onGenderOpen}
+            zIndex={3000}
+            zIndexInverse={3000}
+          />
+
+        </View>
+
+        <View style={{ marginVertical: 10, flexDirection: "row", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", marginHorizontal: 10 }}>
+          {products?.filter((item) => item?.category === category).map((item, index) => (
+            <ProductItem data={item} key={index} />
           ))}
+          {/* {products.map((item, index) => (
+            <ProductItem data={item} key={index} />
+          ))} */}
         </View>
       </ScrollView>
     </SafeAreaView>

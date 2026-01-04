@@ -7,7 +7,7 @@ const ProductItem = ({data}) => {
         <Image source={{uri:data?.image}} style={{width:150,height:150,resizeMode:"contain"}}/>
         <Text numberOfLines={1} style={{width:150,marginTop:10}}>{data?.title}</Text>
         <View style={{marginTop:5,flexDirection:"row",alignItems:"center",justifyContent:"space-between"}}>
-            <Text>{data?.price}</Text>
+            <Text style={{fontSize:14,fontWeight:"bold"}}>₹{data?.price}</Text>
             <Text style={{color:"#ffce12",fontWeight:"bold",marginHorizontal:5}}>{data?.rating?.rate}+ ratings</Text>
         </View>
 
