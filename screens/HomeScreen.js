@@ -1,6 +1,6 @@
 import { Alert, FlatList, Image, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useReducer, useState } from 'react'
 import EvilIcons from '@expo/vector-icons/EvilIcons';
 import Feather from '@expo/vector-icons/Feather';
 import Entypo from '@expo/vector-icons/Entypo';
@@ -9,6 +9,7 @@ import ProductItem from '../components/ProductItem';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { useNavigation } from '@react-navigation/native';
 import Header from '../components/Header';
+import {useSelector} from 'react-redux'
 
 
 
@@ -210,6 +211,10 @@ const HomeScreen = () => {
   useEffect(() => {
     fetchProduct();
   }, [])
+
+  const cart = useSelector((state)=>state.cart.cart);
+  console.log("cart",cart);
+
 
   return (
     <SafeAreaView style={{ paddingTop: Platform.OS === 'android' ? 0 : 0, flex: 1, backgroundColor: "white" }}>
