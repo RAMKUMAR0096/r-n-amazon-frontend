@@ -34,9 +34,7 @@ const AddressScreen = () => {
           <Text style={{fontSize:25,fontWeight:"bold"}}>Add a new Address</Text>
 
           <Text style={{ width: 400, height: 1, backgroundColor: "#D0D0D0", margin: "auto", borderRadius: 20, marginTop: 15 }} />
-
-          {/* <TextInput placeholder='India' placeholderTextColor={"black"} style={{padding:10,borderColor:"#D0D0D0",borderWidth:1,marginTop:10,borderRadius:5}}/> */}
-
+          
           <View style={{marginVertical:10}}>
             <Text style={{fontSize:15,fontWeight:"bold"}}>Full name (First and last name)</Text>
             <TextInput value={data?.name} onChangeText={(text) => handleOnChange("name", text)} placeholder='Enter your name' placeholderTextColor={"black"} style={{padding:10,borderColor:"#D0D0D0",borderWidth:1,marginTop:10,borderRadius:5}}/>
