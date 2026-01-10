@@ -10,6 +10,8 @@ import Entypo from '@expo/vector-icons/Entypo';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import ProductInfoScreen from '../screens/ProductInfoScreen'
+import AddAddressScreen from '../screens/AddAddressScreen'
+import AddressScreen from '../screens/AddressScreen'
 
 
 
@@ -75,6 +77,8 @@ const StackNavigator = () => {
         <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Main" component={BottomTabs} options={{ headerShown: false }} />
         <Stack.Screen name="Info" component={ProductInfoScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Address" component={AddAddressScreen} options={{headerShown:false}} />
+        <Stack.Screen name="Add" component={AddressScreen} options={{headerShown:false}} />
       </Stack.Navigator>
     </NavigationContainer>
   )
