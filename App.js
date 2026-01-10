@@ -3,12 +3,17 @@ import { StyleSheet, Text, View } from 'react-native';
 import StackNavigator from './navigation/StackNavigator';
 import { Provider } from 'react-redux';
 import { store } from './store/store';
+import { UserContext} from './context';
 
 export default function App() {
+
+  
   return (
     <>
       <Provider store={store}>
-        <StackNavigator />
+        <UserContext>
+          <StackNavigator />
+        </UserContext>
       </Provider>
 
     </>

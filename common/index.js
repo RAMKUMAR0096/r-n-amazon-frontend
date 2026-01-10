@@ -7,6 +7,10 @@ const SummaryApi = {
     login : {
         url : `${backendDomain}/api/login`,
         method : 'post'
+    },
+    addAddress : {
+        url : `${backendDomain}/api/add-address`,
+        method : 'post'
     }
 }
     
