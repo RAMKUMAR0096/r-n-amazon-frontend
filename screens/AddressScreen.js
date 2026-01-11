@@ -46,6 +46,7 @@ const AddressScreen = () => {
   }
 
   const handleSubimt = () => {
+    console.log("data",data)
     axios.post(SummaryApi.addAddress.url, { userId,address : data }).then((response) => {
       Alert.alert("Success", "Address added successfully");
       setData({

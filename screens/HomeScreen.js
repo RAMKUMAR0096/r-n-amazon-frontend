@@ -1,6 +1,6 @@
-import { Alert, FlatList, Image, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View,Modal } from 'react-native'
+import { Alert, FlatList, Image, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View, Modal } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import React, { useCallback, useEffect, useReducer, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useReducer, useState } from 'react'
 import EvilIcons from '@expo/vector-icons/EvilIcons';
 import Feather from '@expo/vector-icons/Feather';
 import Entypo from '@expo/vector-icons/Entypo';
@@ -13,6 +13,10 @@ import { useSelector } from 'react-redux';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { jwtDecode } from 'jwt-decode';
+import { UserType } from '../context';
+import SummaryApi from '../common';
 
 
 
@@ -196,10 +200,10 @@ const HomeScreen = () => {
   ]);
 
   const [products, setProducts] = useState([])
-  const [modalVisible,setModalVisible] = useState(false);
-  const [addresses,setAddresses] = useState([])
+  const [modalVisible, setModalVisible] = useState(false);
+  const [addresses, setAddresses] = useState([])
   const [open, setOpen] = useState(false);
-  const [selectedAddress,setSelectedAdress]= useState("")
+  const [selectedAddress, setSelectedAdress] = useState("")
   const [category, setCategory] = useState("jewelery")
 
   const navigation = useNavigation();
@@ -219,8 +223,38 @@ const HomeScreen = () => {
     fetchProduct();
   }, [])
 
+  const { userId, setUserId } = useContext(UserType)
+
+  const fetchUser = async () => {
+    const token = await AsyncStorage.getItem("authToken");
+    const decodedToken = jwtDecode(token)
+    const userId = decodedToken?.userId;
+    setUserId(userId);
+  }
+
+  useEffect(() => {
+    fetchUser();
+  }, [])
+
+  const fetchAddress = async () => {
+    try {
+      const response = await axios.get(`${SummaryApi.getAddress.url}/${userId}`)
+      const addresses = response.data.data;
+    } catch (error) {
+      console.log(error.message)
+      Alert.alert("Error", "Unable to get the address");
+    }
+  }
+
+
+  useEffect(() => {
+    if (userId) {
+      fetchAddress();
+    }
+  },[userId,modalVisible])
+
   const cart = useSelector((state) => state.cart.cart);
- 
+
 
 
   return (
@@ -230,7 +264,7 @@ const HomeScreen = () => {
         <ScrollView vertical>
           <Header />
           <View style={{ backgroundColor: "#AFEEEE", padding: 10, flexDirection: "row", alignItems: "center" }}>
-            <Pressable onPress={()=>setModalVisible((prev)=>!prev)} style={{ flexDirection: "row", alignItems: "center", marginHorizontal: 7, gap: 5, flex: 1 }}>
+            <Pressable onPress={() => setModalVisible((prev) => !prev)} style={{ flexDirection: "row", alignItems: "center", marginHorizontal: 7, gap: 5, flex: 1 }}>
               <EvilIcons name="location" size={24} color="black" style={{ paddingLeft: 10, fontWeight: 400 }} />
               <Text style={{ fontSize: 13, fontWeight: 500 }}>{"Delivered to Ram - Bangalore 627755"}</Text>
               <Entypo name="chevron-small-down" size={24} color="black" style={{ paddingRight: 10 }} />
@@ -464,7 +498,7 @@ const HomeScreen = () => {
 
               <View style={{ flexDirection: "row", alignItems: "center", gap: 5 }}>
                 <FontAwesome6 name="earth-africa" size={22} color="#0066b2" />
-                
+
                 <Text style={{ color: "#0066b2" }}>
                   Deliver outside India
                 </Text>

@@ -11,6 +11,10 @@ const SummaryApi = {
     addAddress : {
         url : `${backendDomain}/api/add-address`,
         method : 'post'
+    },
+    getAddress : {
+        url : `${backendDomain}/api/get-all-address`,
+        method : 'get'
     }
 }
     
