@@ -204,6 +204,7 @@ const HomeScreen = () => {
   const [addresses, setAddresses] = useState([])
   const [open, setOpen] = useState(false);
   const [selectedAddress, setSelectedAdress] = useState("")
+
   const [category, setCategory] = useState("jewelery")
 
   const navigation = useNavigation();
@@ -240,6 +241,7 @@ const HomeScreen = () => {
     try {
       const response = await axios.get(`${SummaryApi.getAddress.url}/${userId}`)
       const addresses = response.data.data;
+      setAddresses(addresses)
     } catch (error) {
       console.log(error.message)
       Alert.alert("Error", "Unable to get the address");
@@ -266,7 +268,13 @@ const HomeScreen = () => {
           <View style={{ backgroundColor: "#AFEEEE", padding: 10, flexDirection: "row", alignItems: "center" }}>
             <Pressable onPress={() => setModalVisible((prev) => !prev)} style={{ flexDirection: "row", alignItems: "center", marginHorizontal: 7, gap: 5, flex: 1 }}>
               <EvilIcons name="location" size={24} color="black" style={{ paddingLeft: 10, fontWeight: 400 }} />
-              <Text style={{ fontSize: 13, fontWeight: 500 }}>{"Delivered to Ram - Bangalore 627755"}</Text>
+              {
+                selectedAddress ? (
+                  <Text numberOfLines={1}>Deliver to {selectedAddress?.name} - {selectedAddress?.street}</Text>
+                ) :(
+                  <Text numberOfLines={1} style={{ fontSize: 13, fontWeight: 500 }}>{"Add a address for delivery"}</Text>
+                )
+              }
               <Entypo name="chevron-small-down" size={24} color="black" style={{ paddingRight: 10 }} />
             </Pressable>
           </View>
@@ -431,23 +439,25 @@ const HomeScreen = () => {
                       selectedAddress === item ? "#FBCEB1" : "white",
                   }}
                 >
-                  <View style={{ flexDirection: "row", alignItems: "center", gap: 3 }}>
-                    <Text style={{ fontSize: 13, fontWeight: "bold" }}>
+                  <View style={{ flexDirection: "row", alignItems: "center", gap: 3,justifyContent:"center" }}>
+                    
+                    <Entypo name="location-pin" size={24} color="red" />
+
+                    <Text numberOfLines={1} style={{ fontSize: 13, fontWeight: "bold",textAlign:"center" }}>
                       {item?.name}
                     </Text>
-                    <Entypo name="location-pin" size={24} color="red" />
                   </View>
 
-                  <Text numberOfLines={1} style={{ width: 130, fontSize: 13 }}>
+                  <Text numberOfLines={1} style={{ width: 130, fontSize: 13,textAlign:"center" }}>
                     {item?.houseNo},{item?.landmark}
                   </Text>
 
-                  <Text numberOfLines={1} style={{ width: 130, fontSize: 13 }}>
+                  <Text numberOfLines={1} style={{ width: 130, fontSize: 13,textAlign:"center" }}>
                     {item?.street}
                   </Text>
 
-                  <Text numberOfLines={1} style={{ width: 130, fontSize: 13 }}>
-                    India, Bangalore
+                  <Text numberOfLines={1} style={{ width: 130, fontSize: 13 ,textAlign:"center"}}>
+                    {item.pincode}
                   </Text>
                 </Pressable>
               ))}

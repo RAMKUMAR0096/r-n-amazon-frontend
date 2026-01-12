@@ -12,6 +12,9 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import ProductInfoScreen from '../screens/ProductInfoScreen'
 import AddAddressScreen from '../screens/AddAddressScreen'
 import AddressScreen from '../screens/AddressScreen'
+import ProfileScreen from '../screens/ProfileScreen'
+import CartScreen from '../screens/CartScreen'
+import ConfirmationScreen from '../screens/ConfirmationScreen'
 
 
 
@@ -39,7 +42,7 @@ const StackNavigator = () => {
         />
         <Tab.Screen
           name="Profile"
-          component={HomeScreen}
+          component={ProfileScreen}
           options={{
             tabBarLabel: "Profile",
             tabBarLabelStyle: {color : "#008E97"},
@@ -54,7 +57,7 @@ const StackNavigator = () => {
         />
         <Tab.Screen
           name="Cart"
-          component={HomeScreen}
+          component={CartScreen}
           options={{
             tabBarLabel: "Cart",
             tabBarLabelStyle: {color : "#008E97"},
@@ -79,6 +82,7 @@ const StackNavigator = () => {
         <Stack.Screen name="Info" component={ProductInfoScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Address" component={AddAddressScreen} options={{headerShown:false}} />
         <Stack.Screen name="Add" component={AddressScreen} options={{headerShown:false}} />
+        <Stack.Screen name="Confirm" component={ConfirmationScreen} options={{headerShown:false}} />
       </Stack.Navigator>
     </NavigationContainer>
   )

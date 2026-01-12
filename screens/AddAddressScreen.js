@@ -1,9 +1,9 @@
 import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Header from '../components/Header'
 import Entypo from '@expo/vector-icons/Entypo';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import axios from 'axios'
 import SummaryApi from '../common';
 import { UserType } from '../context';
@@ -32,6 +32,12 @@ const AddAddressScreen = () => {
     useEffect(() => {
         fetchAddress();
     }, [])
+
+    useFocusEffect(
+        useCallback(()=>{
+            fetchAddress();
+        },[])
+    )
     return (
         <SafeAreaView >
             <ScrollView showsVerticalScrollIndicator={false}>
@@ -45,7 +51,7 @@ const AddAddressScreen = () => {
 
                     <Pressable>
                         {address.map((item,index)=>(
-                            <Pressable style={{borderWidth:1,borderColor:"#D0D0D0",padding:10,flexDirection:"column",gap:5,marginVertical:10}}>
+                            <Pressable key={index} style={{borderWidth:1,borderColor:"#D0D0D0",padding:10,flexDirection:"column",gap:5,marginVertical:10}}>
                                 <View style={{flexDirection:"row",alignItems:"center",gap:6}}>
                                     <Text style={{fontSize:15,fontWeight:"bold"}}>{item.name}</Text>
                                     <Octicons name="location" size={24} color="red" />
