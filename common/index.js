@@ -15,7 +15,11 @@ const SummaryApi = {
     getAddress : {
         url : `${backendDomain}/api/get-all-address`,
         method : 'get'
-    }
+    },
+    orders : {
+        url : `${backendDomain}/api/orders`,
+        method : 'get'
+    },
 }
     
 export default SummaryApi
