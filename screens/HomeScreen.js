@@ -243,7 +243,7 @@ const HomeScreen = () => {
       const addresses = response.data.data;
       setAddresses(addresses)
     } catch (error) {
-      console.log(error.message)
+
       Alert.alert("Error", "Unable to get the address");
     }
   }

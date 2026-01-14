@@ -31,7 +31,7 @@ const RegisterScreen = () => {
         setPassword('');
       })
       .catch((error) => {
-        console.log("registration failed", error.response?.data || error.message);
+       
         Alert.alert(
           "Registration Failed",
           "Something went wrong"

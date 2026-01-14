@@ -15,6 +15,7 @@ import AddressScreen from '../screens/AddressScreen'
 import ProfileScreen from '../screens/ProfileScreen'
 import CartScreen from '../screens/CartScreen'
 import ConfirmationScreen from '../screens/ConfirmationScreen'
+import OrderScreen from '../screens/OrderScreen'
 
 
 
@@ -46,7 +47,6 @@ const StackNavigator = () => {
           options={{
             tabBarLabel: "Profile",
             tabBarLabelStyle: {color : "#008E97"},
-            headerShown: false,
             tabBarIcon: ({ focused }) =>
               focused ? (
                 <Ionicons name="person" size={24} color="#008E97" />
@@ -83,6 +83,7 @@ const StackNavigator = () => {
         <Stack.Screen name="Address" component={AddAddressScreen} options={{headerShown:false}} />
         <Stack.Screen name="Add" component={AddressScreen} options={{headerShown:false}} />
         <Stack.Screen name="Confirm" component={ConfirmationScreen} options={{headerShown:false}} />
+        <Stack.Screen name="Order" component={OrderScreen} options={{headerShown:false}} />
       </Stack.Navigator>
     </NavigationContainer>
   )

@@ -46,7 +46,7 @@ const AddressScreen = () => {
   }
 
   const handleSubimt = () => {
-    console.log("data",data)
+  
     axios.post(SummaryApi.addAddress.url, { userId,address : data }).then((response) => {
       Alert.alert("Success", "Address added successfully");
       setData({
@@ -62,7 +62,7 @@ const AddressScreen = () => {
         navigation.goBack();
       },500)
     }).catch((error)=>{
-      console.log(error)
+   
       Alert.alert("Error","Failed to add address");
     })
   }

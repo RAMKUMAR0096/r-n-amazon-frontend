@@ -29,7 +29,7 @@ const LoginScreen = () => {
 
       }).catch((error)=>{
         Alert.alert("Login Error","Invalid Login")
-        console.log(error);
+
       })
     } catch (error) {
       Alert.alert("Something went wrong","Please Relogin")

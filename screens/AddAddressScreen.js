@@ -25,7 +25,7 @@ const AddAddressScreen = () => {
 
 
         } catch (error) {
-            console.log(error.message)
+            
             Alert.alert("Error", "Unable to get the address");
         }
     }

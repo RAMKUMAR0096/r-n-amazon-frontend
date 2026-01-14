@@ -18,6 +18,14 @@ const SummaryApi = {
     },
     orders : {
         url : `${backendDomain}/api/orders`,
+        method : 'post'
+    },
+    getUser : {
+        url : `${backendDomain}/api/profile`,
+        method : 'get'
+    },
+    getOrders : {
+        url : `${backendDomain}/api/order`,
         method : 'get'
     },
 }

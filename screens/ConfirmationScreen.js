@@ -6,7 +6,7 @@ import { FontAwesome5, MaterialIcons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import { UserType } from "../context";
-import cleanCart from '../store/reducer/CartReducer'
+import {cleanCart} from '../store/reducer/CartReducer'
 import SummaryApi from "../common";
 
 const ConfirmationScreen = () => {
@@ -51,10 +51,11 @@ const ConfirmationScreen = () => {
       };
 
       const response = await axios.post(SummaryApi.orders.url,orderData)
+
       if (response.status === 200) {
         navigation.navigate("Order");
         dispatch(cleanCart());
-        console.log("order created successfully", response.data);
+ 
       } else {
         console.log("error creating order", response.data);
       }
@@ -344,43 +345,6 @@ const ConfirmationScreen = () => {
             <Text>Cash on Delivery</Text>
           </View>
 
-          {/* <View
-            style={{
-              backgroundColor: "white",
-              padding: 8,
-              borderColor: "#D0D0D0",
-              borderWidth: 1,
-              flexDirection: "row",
-              alignItems: "center",
-              gap: 7,
-              marginTop: 12,
-            }}
-          >
-            {selectedOption === "card" ? (
-              <FontAwesome5 name="dot-circle" size={20} color="#008397" />
-            ) : (
-              <Entypo
-                onPress={() => {
-                  setSelectedOption("card");
-                  Alert.alert("UPI/Debit card", "Pay Online", [
-                    {
-                      text: "Cancel",
-                      onPress: () => console.log("Cancel is pressed"),
-                    },
-                    {
-                      text: "OK",
-                      onPress: () => pay(),
-                    },
-                  ]);
-                }}
-                name="circle"
-                size={20}
-                color="gray"
-              />
-            )}
-
-            <Text>UPI / Credit or debit card</Text>
-          </View> */}
           <Pressable
             onPress={() => setCurrentStep(3)}
             style={{
@@ -508,7 +472,7 @@ const ConfirmationScreen = () => {
           </View>
 
           <Pressable
-            onPress={handlePlaceOrder}
+            onPress={()=>handlePlaceOrder()}
             style={{
               backgroundColor: "#FFC72C",
               padding: 10,
